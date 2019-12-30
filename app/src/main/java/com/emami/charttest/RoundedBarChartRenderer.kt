@@ -14,18 +14,18 @@ import com.github.mikephil.charting.utils.ViewPortHandler
  * This class overrides the default canvas object to draw rounded rect instead of normal rect!
  */
 class CustomBarChartRenderer(
-    protected var mChart: BarDataProvider,
+    private val radius: Float,
+    private var mChart: BarDataProvider,
     animator: ChartAnimator?,
     viewPortHandler: ViewPortHandler?
 ) : BarLineScatterCandleBubbleRenderer(animator, viewPortHandler) {
-    val radius = 25f
     /**
      * the rect object that is used for drawing the bars
      */
-    protected var mBarRect = RectF()
-    protected lateinit var mBarBuffers: Array<BarBuffer?>
-    protected var mShadowPaint: Paint
-    protected var mBarBorderPaint: Paint
+    private var mBarRect = RectF()
+    private lateinit var mBarBuffers: Array<BarBuffer?>
+    private var mShadowPaint: Paint
+    private var mBarBorderPaint: Paint
     override fun initBuffers() {
         val barData = mChart.barData
         mBarBuffers = arrayOfNulls(barData.dataSetCount)
@@ -49,7 +49,7 @@ class CustomBarChartRenderer(
     }
 
     private val mBarShadowRectBuffer = RectF()
-    protected fun drawDataSet(
+    private fun drawDataSet(
         c: Canvas,
         dataSet: IBarDataSet,
         index: Int
@@ -152,7 +152,7 @@ class CustomBarChartRenderer(
         }
     }
 
-    protected fun prepareBarHighlight(
+    private fun prepareBarHighlight(
         x: Float,
         y1: Float,
         y2: Float,
@@ -412,16 +412,11 @@ class CustomBarChartRenderer(
         }
     }
 
-    fun drawRoundRect(canvas: Canvas, left: Float, top: Float, right: Float, bottom: Float) {
-        val rad = (right - left) / 2
-        canvas.drawRoundRect(left, top, right, bottom, rad, rad, mRenderPaint)
-    }
-
     /**
      * Sets the drawing position of the highlight object based on the riven bar-rect.
      * @param high
      */
-    protected fun setHighlightDrawPos(
+    private fun setHighlightDrawPos(
         high: Highlight,
         bar: RectF
     ) {
