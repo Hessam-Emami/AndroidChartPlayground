@@ -1,17 +1,15 @@
 package com.emami.charttest
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -46,9 +44,10 @@ private fun setupXAxis(xAxis: XAxis, gridColor: Int) {
 
 private fun setupYAxis(yAxis: YAxis, gridColor: Int) {
     yAxis.apply {
-        axisLineColor = gridColor
-        enableAxisLineDashedLine(1.0f, 1f, 0f)
-        spaceBottom = 10f
+        setGridColor(gridColor)
+        setDrawAxisLine(false)
+        enableGridDashedLine(1.0f, 1f, 0f)
+        spaceBottom = 2f
     }
 }
 
@@ -58,6 +57,8 @@ private fun setupCharInteractions(barChart: BarChart) {
         setTouchEnabled(false)
         isDragEnabled = false
         setDrawBorders(false)
+        axisRight.isEnabled = false
+        setFitBars(true)
     }
 }
 
@@ -76,4 +77,6 @@ private fun provideChartData(): BarData {
 object ChartDataProvider {
     val dummyDataForX = (0..6).toList()
     fun generateDummyDataForY() = List(7) { Random.nextInt(1, 100) }
+    val quarters = listOf("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7")
+
 }
